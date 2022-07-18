@@ -414,7 +414,6 @@ function @setupList(){
 }
 
 
-
 #----------------------------------------------------------------------
 # config...
 
@@ -428,6 +427,15 @@ function @setupList(){
 
 #----------------------------------------------------------------------
 # help and arguments...
+
+function listScripts(){
+	[ -d "$SCRIPT_DIR" ] \
+		&& echo "-" \
+		&& return 0
+
+	local scripts=( $(ls "$SCRIPT_DIR") )
+	echo ${scripts/README}
+}
 
 function printhelp(){ cat << EOF
 Usage: $CMD [OPTIONS]
@@ -455,6 +463,9 @@ Default features:
 Supported features:
   ${ALL_FEATURES[@]}
 
+Available scripts:
+  $( listScripts )
+
 
 Examples:
     Only create dirs and links (features dir and user-link)...
@@ -480,6 +491,7 @@ while ! [ -z "$1" ] ; do
 			QUIET=1
 			shift
 			;;
+		# XXX introspection...
 
 		-s|--source)
 			[ -z "$2" ] \
