@@ -1,0 +1,571 @@
+#!/usr/bin/bash
+#----------------------------------------------------------------------
+#
+# TODO:
+#	- link config files
+#	- copy config files
+#	- edit system config files
+#	- might be a good idea to add gui/no-gui options...
+#	- ssh-keygen...
+#
+#
+#----------------------------------------------------------------------
+# options...
+
+
+#FEATURE_DIR=
+#DRY_RUN=
+#QUIET=
+
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CMD=$(basename $0)
+
+SYSTEM_RC=${0}rc
+USER_RC=~/.${CMD}rc
+
+SCRIPT_DIR=${0}.d/
+
+
+#----------------------------------------------------------------------
+# configuration....
+
+# see: ALL_FEATURES below...
+FEATURES=(
+	dir
+
+	dnf
+	flatpak
+	snap
+	npm
+
+	start-services
+	start-user-services
+
+	# these can depend on some services like syncthing...
+	user-link
+	user-copy
+
+	scripts
+)
+
+
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+DIR=(
+	~/.bashrc.d
+	~/bin
+	~/.config
+	~/.local/share
+
+	~/Sync/ALL
+	~/work/EXTERNAL
+)
+
+
+PKG_DNF=( 
+	# tools and recovery...
+	gparted gdisk testdisk
+
+	snapd 
+
+	# networking...
+	cronie syncthing tor obfs4 
+	youtube-dl qbittorrent
+
+	# tools...
+	openssl gpm  
+	mc tmux bat htop
+	keepassxc
+
+	# dev...
+	vim gvim vifm 
+	git nodejs
+	p7zip zip unrar
+
+	# media...
+	vlc mpv
+
+	# desktop...
+	ulauncher 
+	gnome-tweaks 
+	gnome-shell-extension-gsconnect
+)
+
+PKG_NPM=(
+	tldr 
+)
+
+PKG_FLATPAK=(
+	com.github.tchx84.Flatseal 
+	com.mattjakeman.ExtensionManager 
+)
+
+PKG_SNAP=(
+	irfanview
+	foobar2000
+	snap-store 
+)
+
+
+SERVICES_START=(
+	crond sshd gpm
+)
+
+SERVICES_USER_START=(
+	syncthing
+)
+
+
+# XXX
+CFG_USER_SOURCE=~/Sync/CONFIG/Linux/
+CFG_USER_LINK=(
+	.gitconfig
+	.vimrc .gvimrc .vim
+	.tmux.conf
+	.config/mc
+	.config/ulauncher
+)
+CFG_USER_COPY=(
+) 
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+SAVE=(
+	FEATURES
+	DIR
+	PKG_DNF PKG_FLATPAK PKG_NPM PKG_SNAP
+	SERVICES_START SERVICES_USER_START
+	CFG_USER_SOURCE CFG_USER_LINK CFG_USER_COPY
+)
+
+
+
+#----------------------------------------------------------------------
+# Builtin features...
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-dir(){
+	@setupList mkdir -p - ${DIR[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-user-link(){
+	# XXX
+	true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-user-copy(){
+	# XXX
+	true
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-dnf(){
+	@ sudo dnf update
+
+	@setupList sudo dnf install - ${PKG_DNF[@]}
+
+	# default editor...
+	@ sudo dnf install vim-default-editor --allowerasing
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-npm(){
+	@setupList sudo npm install -g - ${PKG_NPM[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-flatpak(){
+	@ sudo flatpak remote-add --if-not-exists flathub \
+		https://flathub.org/repo/flathub.flatpakrepo
+
+	@setupList sudo flatpak install - ${PKG_FLATPAK[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-snap(){
+	@ sudo ln -s /var/lib/snapd/snap /snap
+
+	@setupList sudo snap install - ${PKG_SNAP[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-start-services(){
+	@setupList sudo systemctl enable - ${SERVICES_START[@]}
+	@setupList sudo systemctl --user enable - ${SERVICES_USER_START[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-start-user-services(){
+	@setupList sudo systemctl start - ${SERVICES_START[@]}
+	@setupList sudo systemctl --user start - ${SERVICES_USER_START[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-keyd(){ (
+	@ cd ~/work/EXTERNAL
+	@ git clone https://github.com/rvaiya/keyd
+	@ cd keyd
+	@ make \
+		&& @ sudo make install
+	@ sudo systemctl enable keyd \
+		&& @ sudo systemctl start keyd
+
+	# XXX copy config: /etc/keyd/<keyboard-id>.conf...
+
+) }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-bash(){ (
+	@ cd ~/work/
+	@ git clone git@github.com:flynx/bashctrl
+	@ cd bashctrl
+	@ ./bashctrl -y setup \
+) }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-far(){
+	@ sudo dnf copr enable polter/far2l	
+	@ sudo dnf install far2l far2l-tty
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-gnome(){
+	# fractional scaling...
+	@ gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
+
+	# disable beeps...
+	@ gsettings set org.gnome.desktop.sound event-sounds false
+	# visual bell...
+	@ gsettings set org.gnome.desktop.wm.preferences visual-bell true
+	@ gsettings set org.gnome.desktop.wm.preferences visual-bell-type frame-flash
+
+	# swap language with alt-shift...
+	# NOTE: with the way the gui is setup not this is not possible to set there...
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Alt>Shift_L']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Shift>Alt_L']"
+
+	# custom keys...
+	# XXX
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-syncthing(){
+	# XXX can we do this from CLI???
+	#		need to:
+	#			- link device
+	#			- share ALL directory
+	#			- wait for sync
+	@ echo "Waiting for Syncthing to be connected with other devices manually."
+	@ read -p "(press any key when done)"
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-snapshots(){ (
+	@ dnf install snapper python3-dnf-plugin-snapper
+	@ sudo snapper -c root create-config /
+	@ sudo snapper -c home create-config /home
+	@ sudo snapper -c boot create-config /boot
+
+	@ cd ~/work/EXTERNAL/
+	@ git clone https://github.com/Antynea/grub-btrfs.git
+	@ cd grub-btrfs
+	@ sudo make install
+) }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-scripts(){ (
+	[ -d "$SCRIPT_DIR" ] \
+		|| return 1
+
+	cd "$SCRIPT_DIR"
+	for script in * ; do
+		echo "# $script:"
+		( @ ./$script )
+	done
+) }
+
+
+
+#----------------------------------------------------------------------
+# feature api...
+
+# default 
+ALL_FEATURES=(
+	dir
+
+	dnf
+	flatpak
+	snap
+	npm
+
+	start-services
+	start-user-services
+
+	user-link
+	user-copy
+
+	# keep this last...
+	scripts
+)
+
+function @feature(){
+	while ! [ -z "$1" ] ; do
+		local feauture="$1"
+		for f in "${FEATURES[@]}" ; do
+			if [ "$f" == "${feature}" ] ; then
+				return 0
+			fi
+		done
+		shift
+	done
+	false
+}
+
+function @feature-add(){
+	while ! [ -z "$1" ] ; do
+		if ! @feature "$1" ; then
+			FEATURES+=("$1")
+		fi
+		shift
+	done
+}
+
+function @feature-del(){
+	while ! [ -z $1 ] ; do
+		FEATURES=( ${FEATURES[@]/$1} )
+		shift
+	done
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+# XXX add an interactive list editor???
+# XXX
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# command runners...
+
+
+# Print command and if $DRY_RUN is not set run it...
+#
+function @(){
+	# XXX this does not preserve quotes...
+	[ -z $QUIET ] \
+		&& echo "## $@"
+	if [ -z $DRY_RUN ] ; then 
+		$@
+
+	# need to exit with true status on dry runs...
+	else
+		true
+	fi
+}
+
+# Setup list if not empty...
+#
+# Usage:
+#	@setupList CMD - LIST
+#
+function @setupList(){
+	local CMD=
+	local LST=
+	# get command...
+	while true ; do
+		if [ $# == 0 ] || [ $1 == "-" ]  ; then
+			shift
+			break
+		fi
+		CMD="$CMD $1"
+		shift
+	done
+	# list...
+	LST=("$@")
+
+	# run command if list is not empty...
+	if [ ${#LST[@]} != 0 ] ; then
+		@ $CMD ${LST[@]}
+	fi
+}
+
+
+
+#----------------------------------------------------------------------
+# config...
+
+[ -e "${SYSTEM_RC}" ] \
+	&& source ${SYSTEM_RC}
+
+[ -e "${USER_RC}" ] \
+	&& source ${USER_RC}
+
+
+
+#----------------------------------------------------------------------
+# help and arguments...
+
+function printhelp(){ cat << EOF
+Usage: $CMD [OPTIONS]
+
+Options:
+    -h | --help         - print this message and exit.
+    -d | --dry-run      - report the actions but do nothing.
+    -q | --quiet        - run in quiet mode.
+
+External configuration:
+    -s | --source FILE  - read config from file.
+                          (this flag can be used multiple times)
+    -o | --output FILE  - write config to file.
+
+Feature list manipulation:
+    -all                - clear features
+    +all                - reset features to \$ALL_FEATURES
+    -FEATURE            - remove FEATURE from list
+    +FEATURE            - add FEATURE to lost
+
+
+Default features:
+  ${FEATURES[@]}
+
+Supported features:
+  ${ALL_FEATURES[@]}
+
+
+Examples:
+    Only create dirs and links (features dir and user-link)...
+    \$ $CMD -all +die +user-link
+
+    Same as above...
+    \$ FEATURES=( dir user-link )  $CMD
+
+EOF
+}
+
+while ! [ -z "$1" ] ; do
+	case "$1" in
+		-h|--help)
+			printhelp
+			exit
+			;;
+		-d|--dry-run)
+			DRY_RUN=1
+			shift
+			;;
+		-q|--quiet)
+			QUIET=1
+			shift
+			;;
+
+		-s|--source)
+			[ -z "$2" ] \
+				&& source "$2"
+			shift
+			shift
+			;;
+		-o|--output)
+			SAVE=1
+			SAVE_FILE=$2
+			shift
+			shift
+			;;
+
+		+all)
+			FEATURES=( ${ALL_FEATURES[@]} )
+			shift
+			;;
+		-all)
+			FEATURES=()
+			shift
+			;;
+		# enable feature...	
+		+*)
+			@feature-add "${1:1}"
+			shift
+			;;
+		# disable feature,..	
+		-*)
+			@feature-del "${1:1}"
+			shift
+			;;
+	esac
+done
+
+
+
+
+
+#----------------------------------------------------------------------
+# install/setup stuff...
+
+echo "# FEATURES: ${FEATURES[@]}"
+
+# built-in functions...
+# NOTE: order of execution is set by $ALL_FEATURES...
+_features=( "${FEATURES[@]}" )
+for feature in "${ALL_FEATURES[@]}" ; do
+	# skip...
+	@feature "$feature" \
+		|| continue
+
+	# functions...
+	if [ "$(type -t feature-$feature)" == "function" ] ; then
+		echo "# $feature:"
+		_features=( ${_features[@]/$feature} )
+		feature-$feature
+	fi
+done
+# features not in $ALL_FEATURES...
+for feature in "${_features[@]}" ; do
+	echo "# $feature:"
+	# built-in...
+	if [ "$(type -t feature-$feature)" == "function" ] ; then
+		feature-$feature
+
+	# feature scripts...
+	elif [ -d "$FEATURE_DIR" ] ; then
+		"$FEATURE_DIR"/$feature
+
+	# err...
+	else
+		echo "$CMD: unknown feature: $feature"
+	fi
+done
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# save...
+
+# XXX
+
+
+
+
+
+
+#----------------------------------------------------------------------
+# vim:set ts=4 sw=4 spell nowrap :
