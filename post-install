@@ -72,13 +72,12 @@ PKG_DNF=(
 	# tools and recovery...
 	gparted gdisk testdisk
 
-	snapd 
-
 	# networking...
 	cronie syncthing tor obfs4 
 	youtube-dl qbittorrent
 
 	# tools...
+	snapd 
 	openssl gpm  
 	mc tmux bat htop
 	keepassxc
@@ -95,6 +94,9 @@ PKG_DNF=(
 	ulauncher 
 	gnome-tweaks 
 	gnome-shell-extension-gsconnect
+
+	# apps...
+	krita
 )
 
 PKG_NPM=(
@@ -102,8 +104,23 @@ PKG_NPM=(
 )
 
 PKG_FLATPAK=(
+	# system...
 	com.github.tchx84.Flatseal 
 	com.mattjakeman.ExtensionManager 
+	io.github.realmazharhussain.GdmSettings
+	org.gustavoperedo.FontDownloader
+
+	# net...
+	org.briarproject.Briar
+	com.github.ElostonUngoogledChromium
+
+	# media...
+	#io.mpv.Mpv
+	#org.videolan.VLC
+
+	# tools...
+	ch.openboard.OpenBoard
+	org.blender.Blender
 )
 
 PKG_SNAP=(
@@ -445,6 +462,10 @@ Options:
     -d | --dry-run      - report the actions but do nothing.
     -q | --quiet        - run in quiet mode.
 
+    --list-features     - list enabled features.
+    --list-all-features - list supported features.
+    --list-scripts      - list available scripts.
+
 External configuration:
     -s | --source FILE  - read config from file.
                           (this flag can be used multiple times)
@@ -491,8 +512,22 @@ while ! [ -z "$1" ] ; do
 			QUIET=1
 			shift
 			;;
-		# XXX introspection...
 
+		# introspection...
+		--list-features)
+			echo ${FEATURES[@]}
+			exit
+			;;
+		--list-all-features)
+			echo ${ALL_FEATURES[@]}
+			exit
+			;;
+		--list-scripts)
+			listScripts
+			exit
+			;;
+
+		# config files...
 		-s|--source)
 			[ -z "$2" ] \
 				&& source "$2"
@@ -506,6 +541,7 @@ while ! [ -z "$1" ] ; do
 			shift
 			;;
 
+		# feature manipulation...
 		+all)
 			FEATURES=( ${ALL_FEATURES[@]} )
 			shift
@@ -514,12 +550,10 @@ while ! [ -z "$1" ] ; do
 			FEATURES=()
 			shift
 			;;
-		# enable feature...	
 		+*)
 			@feature-add "${1:1}"
 			shift
 			;;
-		# disable feature,..	
 		-*)
 			@feature-del "${1:1}"
 			shift
