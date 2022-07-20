@@ -28,6 +28,7 @@ SYSTEM_RC=${0}rc
 USER_RC=~/.${CMD}rc
 
 SCRIPT_DIR=${0}.d/
+MACHINE_SCRIPT_DIR=$SCRIPT_DIR/michine/
 
 
 
@@ -383,7 +384,7 @@ function feature-platform-scripts(){
 		local platform=default
 	fi
 
-	feature-scripts "$SCRIPT_DIR/$platform"
+	feature-scripts "$MACHINE_SCRIPT_DIR/$platform"
 }
 
 
