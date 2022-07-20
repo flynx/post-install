@@ -381,6 +381,9 @@ function feature-scripts(){ (
 	cd "$dir"l
 	local script
 	for script in * ; do
+		( [ "${script}" == "README" ] \
+				|| [ "${script:0:1}" == "-" ] )\
+			&& continue
 		echo "# $script:"
 		( @ ./$script )
 	done
