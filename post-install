@@ -7,6 +7,7 @@
 #	- edit system config files
 #	- might be a good idea to add gui/no-gui options...
 #	- ssh-keygen...
+#	- add --system and --user flags to only do system/user stuff...
 #
 #
 #----------------------------------------------------------------------
@@ -27,8 +28,22 @@ CMD=$(basename $0)
 SYSTEM_RC=${0}rc
 USER_RC=~/.${CMD}rc
 
+# XXX do we need to split user and system scripts???
 SCRIPT_DIR=${0}.d/
-MACHINE_SCRIPT_DIR=$SCRIPT_DIR/michine/
+USER_SCRIPT_DIR=${0}.d/user/
+
+# System info...
+if ! [ -z "$(type -t dmidecode )" ] ; then
+	# XXX should we be more specific here and include model number??
+	PLATFORM=$( dmidecode \
+		| grep -A3 '^System Information' \
+		| grep 'Version:' \
+		| sed 's/\s*Version:\s*//' )
+else
+	PLATFORM=unknown
+fi
+
+PLATFORM_SCRIPT_DIR=${SCRIPT_DIR}/platform/${PLATFORM}
 
 
 
@@ -53,6 +68,7 @@ FEATURES=(
 
 	scripts
 	platform-scripts
+	user-scripts
 )
 
 
@@ -199,6 +215,7 @@ ALL_FEATURES=(
 	# keep this last...
 	scripts
 	platform-scripts
+	user-scripts
 )
 
 
@@ -349,10 +366,7 @@ function feature-snapshots(){ (
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# XXX split these into:
-#		- system
-#		- machine -- get platform name
-#		- user
+# XXX skip scripts starting in "-" 
 function feature-scripts(){ (
 	if ! [ -z "$1" ] ; then
 		local dir=$1
@@ -373,18 +387,11 @@ function feature-scripts(){ (
 ) }
 
 function feature-platform-scripts(){
-	# System info...
-	if ! [ -z "$(type -t dmidecode )" ] ; then
-		# XXX should we be more specific here and include model number??
-		local platform=$( dmidecode \
-			| grep -A3 '^System Information' \
-			| grep 'Version:' \
-			| sed 's/\s*Version:\s*//' )
-	else
-		local platform=default
-	fi
+	feature-scripts "$PLATFORM_SCRIPT_DIR"
+}
 
-	feature-scripts "$MACHINE_SCRIPT_DIR/$platform"
+function feature-user-scripts(){
+	feature-scripts "$USER_SCRIPT_DIR"
 }
 
 
@@ -521,6 +528,10 @@ Feature list manipulation:
     -FEATURE            - remove FEATURE from list
     +FEATURE            - add FEATURE to lost
 
+Helpers:
+    --make-platform-dir - make platform directory for current platform
+                          and exit.
+
 
 Default features:
   ${FEATURES[@]}
@@ -585,7 +596,17 @@ while ! [ -z "$1" ] ; do
 			shift
 			;;
 
+		# helpers...
+		--make-platform-dir)
+			echo "# Patform script dir: $PLATFORM_SCRIPT_DIR"
+			[ -d "$PLATFORM_SCRIPT_DIR" ] \
+				|| @ mkdir -p "$PLATFORM_SCRIPT_DIR"
+			exit
+			;;
+
+
 		# feature manipulation...
+		# NOTE: keep these last...
 		+all)
 			FEATURES=( ${ALL_FEATURES[@]} )
 			shift
