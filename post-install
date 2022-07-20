@@ -30,6 +30,7 @@ USER_RC=~/.${CMD}rc
 SCRIPT_DIR=${0}.d/
 
 
+
 #----------------------------------------------------------------------
 # configuration....
 
@@ -50,6 +51,7 @@ FEATURES=(
 	user-copy
 
 	scripts
+	platform-scripts
 )
 
 
@@ -66,6 +68,21 @@ DIR=(
 	~/Sync/ALL
 	~/work/EXTERNAL
 )
+
+# NOTE: $DIR and these are not run in order -- linking may need other 
+#		stuff done before...
+# XXX
+CFG_USER_SOURCE=~/Sync/CONFIG/Linux/
+CFG_USER_LINK=(
+	.gitconfig
+	.vimrc .gvimrc .vim
+	.tmux.conf
+	.config/mc
+	.config/ulauncher
+)
+CFG_USER_COPY=(
+) 
+
 
 
 PKG_DNF=( 
@@ -139,18 +156,6 @@ SERVICES_USER_START=(
 )
 
 
-# XXX
-CFG_USER_SOURCE=~/Sync/CONFIG/Linux/
-CFG_USER_LINK=(
-	.gitconfig
-	.vimrc .gvimrc .vim
-	.tmux.conf
-	.config/mc
-	.config/ulauncher
-)
-CFG_USER_COPY=(
-) 
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -166,6 +171,35 @@ SAVE=(
 
 #----------------------------------------------------------------------
 # Builtin features...
+
+# default 
+# XXX this should be split into system and user sections...
+ALL_FEATURES=(
+	# system...
+	dnf
+	flatpak
+	snap
+	npm
+
+	#keyd
+
+	start-services
+
+	# user..
+	dir
+
+	user-link
+	user-copy
+
+	#syncthing
+
+	start-user-services
+
+	# keep this last...
+	scripts
+	platform-scripts
+)
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-dir(){
@@ -223,14 +257,14 @@ function feature-snap(){
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-start-services(){
+	@setupList sudo systemctl start - ${SERVICES_START[@]}
 	@setupList sudo systemctl enable - ${SERVICES_START[@]}
-	@setupList sudo systemctl --user enable - ${SERVICES_USER_START[@]}
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-start-user-services(){
-	@setupList sudo systemctl start - ${SERVICES_START[@]}
+	@setupList sudo systemctl --user enable - ${SERVICES_USER_START[@]}
 	@setupList sudo systemctl --user start - ${SERVICES_USER_START[@]}
 }
 
@@ -314,40 +348,49 @@ function feature-snapshots(){ (
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# XXX split these into:
+#		- system
+#		- machine -- get platform name
+#		- user
 function feature-scripts(){ (
-	[ -d "$SCRIPT_DIR" ] \
+	if ! [ -z "$1" ] ; then
+		local dir=$1
+	else
+		local dir=$SCRIPT_DIR
+	fi
+
+	# no script dir...
+	[ -d "$dir" ] \
 		|| return 1
 
-	cd "$SCRIPT_DIR"
+	cd "$dir"l
+	local script
 	for script in * ; do
 		echo "# $script:"
 		( @ ./$script )
 	done
 ) }
 
+function feature-platform-scripts(){
+	# System info...
+	if ! [ -z "$(type -t dmidecode )" ] ; then
+		# XXX should we be more specific here and include model number??
+		local platform=$( dmidecode \
+			| grep -A3 '^System Information' \
+			| grep 'Version:' \
+			| sed 's/\s*Version:\s*//' )
+	else
+		local platform=default
+	fi
+
+	feature-scripts "$SCRIPT_DIR/$platform"
+}
+
+
 
 
 #----------------------------------------------------------------------
 # feature api...
-
-# default 
-ALL_FEATURES=(
-	dir
-
-	dnf
-	flatpak
-	snap
-	npm
-
-	start-services
-	start-user-services
-
-	user-link
-	user-copy
-
-	# keep this last...
-	scripts
-)
 
 function @feature(){
 	while ! [ -z "$1" ] ; do
@@ -490,7 +533,7 @@ Available scripts:
 
 Examples:
     Only create dirs and links (features dir and user-link)...
-    \$ $CMD -all +die +user-link
+    \$ $CMD -all +dir +user-link
 
     Same as above...
     \$ FEATURES=( dir user-link )  $CMD
