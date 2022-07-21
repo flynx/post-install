@@ -381,6 +381,7 @@ function feature-scripts(){ (
 	cd "$dir"l
 	local script
 	for script in * ; do
+		# skip README and scripts starting with '-'...
 		( [ "${script}" == "README" ] \
 				|| [ "${script:0:1}" == "-" ] )\
 			&& continue
