@@ -82,6 +82,10 @@ PKG_DNF=(
 	mc tmux bat htop
 	keepassxc
 
+	terminus-fonts
+	terminus-fonts-console
+	terminus-fonts-grub2
+
 	# dev...
 	vim gvim vifm 
 	git nodejs
