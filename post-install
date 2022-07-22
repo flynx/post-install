@@ -7,6 +7,7 @@
 #	- edit system config files
 #	- might be a good idea to add gui/no-gui options...
 #	- ssh-keygen...
+#	- add --system and --user flags to only do system/user stuff...
 #
 #
 #----------------------------------------------------------------------
@@ -27,7 +28,23 @@ CMD=$(basename $0)
 SYSTEM_RC=${0}rc
 USER_RC=~/.${CMD}rc
 
+# XXX do we need to split user and system scripts???
 SCRIPT_DIR=${0}.d/
+USER_SCRIPT_DIR=${0}.d/user/
+
+# System info...
+if ! [ -z "$(type -t dmidecode )" ] ; then
+	# XXX should we be more specific here and include model number??
+	PLATFORM=$( dmidecode \
+		| grep -A3 '^System Information' \
+		| grep 'Version:' \
+		| sed 's/\s*Version:\s*//' )
+else
+	PLATFORM=unknown
+fi
+
+PLATFORM_SCRIPT_DIR=${SCRIPT_DIR}/platform/${PLATFORM}
+
 
 
 #----------------------------------------------------------------------
@@ -50,6 +67,8 @@ FEATURES=(
 	user-copy
 
 	scripts
+	platform-scripts
+	user-scripts
 )
 
 
@@ -66,6 +85,21 @@ DIR=(
 	~/Sync/ALL
 	~/work/EXTERNAL
 )
+
+# NOTE: $DIR and these are not run in order -- linking may need other 
+#		stuff done before...
+# XXX
+CFG_USER_SOURCE=~/Sync/CONFIG/Linux/
+CFG_USER_LINK=(
+	.gitconfig
+	.vimrc .gvimrc .vim
+	.tmux.conf
+	.config/mc
+	.config/ulauncher
+)
+CFG_USER_COPY=(
+) 
+
 
 
 PKG_DNF=( 
@@ -143,18 +177,6 @@ SERVICES_USER_START=(
 )
 
 
-# XXX
-CFG_USER_SOURCE=~/Sync/CONFIG/Linux/
-CFG_USER_LINK=(
-	.gitconfig
-	.vimrc .gvimrc .vim
-	.tmux.conf
-	.config/mc
-	.config/ulauncher
-)
-CFG_USER_COPY=(
-) 
-
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -170,6 +192,36 @@ SAVE=(
 
 #----------------------------------------------------------------------
 # Builtin features...
+
+# default 
+# XXX this should be split into system and user sections...
+ALL_FEATURES=(
+	# system...
+	dnf
+	flatpak
+	snap
+	npm
+
+	#keyd
+
+	start-services
+
+	# user..
+	dir
+
+	user-link
+	user-copy
+
+	#syncthing
+
+	start-user-services
+
+	# keep this last...
+	scripts
+	platform-scripts
+	user-scripts
+)
+
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-dir(){
@@ -227,14 +279,14 @@ function feature-snap(){
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-start-services(){
+	@setupList sudo systemctl start - ${SERVICES_START[@]}
 	@setupList sudo systemctl enable - ${SERVICES_START[@]}
-	@setupList sudo systemctl --user enable - ${SERVICES_USER_START[@]}
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-start-user-services(){
-	@setupList sudo systemctl start - ${SERVICES_START[@]}
+	@setupList sudo systemctl --user enable - ${SERVICES_USER_START[@]}
 	@setupList sudo systemctl --user start - ${SERVICES_USER_START[@]}
 }
 
@@ -318,40 +370,43 @@ function feature-snapshots(){ (
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# XXX skip scripts starting in "-" 
 function feature-scripts(){ (
-	[ -d "$SCRIPT_DIR" ] \
+	if ! [ -z "$1" ] ; then
+		local dir=$1
+	else
+		local dir=$SCRIPT_DIR
+	fi
+
+	# no script dir...
+	[ -d "$dir" ] \
 		|| return 1
 
-	cd "$SCRIPT_DIR"
+	cd "$dir"l
+	local script
 	for script in * ; do
+		# skip README and scripts starting with '-'...
+		( [ "${script}" == "README" ] \
+				|| [ "${script:0:1}" == "-" ] )\
+			&& continue
 		echo "# $script:"
 		( @ ./$script )
 	done
 ) }
 
+function feature-platform-scripts(){
+	feature-scripts "$PLATFORM_SCRIPT_DIR"
+}
+
+function feature-user-scripts(){
+	feature-scripts "$USER_SCRIPT_DIR"
+}
+
+
 
 
 #----------------------------------------------------------------------
 # feature api...
-
-# default 
-ALL_FEATURES=(
-	dir
-
-	dnf
-	flatpak
-	snap
-	npm
-
-	start-services
-	start-user-services
-
-	user-link
-	user-copy
-
-	# keep this last...
-	scripts
-)
 
 function @feature(){
 	while ! [ -z "$1" ] ; do
@@ -481,6 +536,10 @@ Feature list manipulation:
     -FEATURE            - remove FEATURE from list
     +FEATURE            - add FEATURE to lost
 
+Helpers:
+    --make-platform-dir - make platform directory for current platform
+                          and exit.
+
 
 Default features:
   ${FEATURES[@]}
@@ -494,7 +553,7 @@ Available scripts:
 
 Examples:
     Only create dirs and links (features dir and user-link)...
-    \$ $CMD -all +die +user-link
+    \$ $CMD -all +dir +user-link
 
     Same as above...
     \$ FEATURES=( dir user-link )  $CMD
@@ -545,7 +604,17 @@ while ! [ -z "$1" ] ; do
 			shift
 			;;
 
+		# helpers...
+		--make-platform-dir)
+			echo "# Patform script dir: $PLATFORM_SCRIPT_DIR"
+			[ -d "$PLATFORM_SCRIPT_DIR" ] \
+				|| @ mkdir -p "$PLATFORM_SCRIPT_DIR"
+			exit
+			;;
+
+
 		# feature manipulation...
+		# NOTE: keep these last...
 		+all)
 			FEATURES=( ${ALL_FEATURES[@]} )
 			shift
