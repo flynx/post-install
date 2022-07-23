@@ -61,7 +61,6 @@ FEATURES=(
 
 	dnf
 	flatpak
-	snap
 	npm
 
 	start-services
@@ -116,7 +115,6 @@ PKG_DNF=(
 	youtube-dl qbittorrent
 
 	# tools...
-	snapd 
 	openssl gpm  
 	mc tmux bat htop
 	keepassxc
@@ -273,15 +271,14 @@ function feature-npm(){
 function feature-flatpak(){
 	@ sudo flatpak remote-add --if-not-exists flathub \
 		https://flathub.org/repo/flathub.flatpakrepo
-
 	@setupList sudo flatpak install - ${PKG_FLATPAK[@]}
 }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-snap(){
+	@ sudo dnf install snapd
 	@ sudo ln -s /var/lib/snapd/snap /snap
-
 	@setupList sudo snap install - ${PKG_SNAP[@]}
 }
 
