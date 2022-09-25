@@ -62,6 +62,7 @@ FEATURES=(
 	dnf
 	flatpak
 	npm
+	vim
 
 	start-services
 	start-user-services
@@ -119,7 +120,7 @@ PKG_DNF=(
 
 	# tools...
 	openssl gpm  
-	mc tmux bat htop
+	mc tmux bat htop cpu-x
 	keepassxc
 
 	# tty fonts...
@@ -131,7 +132,7 @@ PKG_DNF=(
 	terminus-fonts-grub2
 
 	# dev...
-	vim gvim vifm 
+	vifm 
 	git nodejs
 	p7zip zip unrar
 
@@ -210,6 +211,7 @@ ALL_FEATURES=(
 	flatpak
 	snap
 	npm
+	vim
 
 	start-services
 
@@ -254,11 +256,7 @@ function feature-user-copy(){
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-dnf(){
 	@ sudo dnf update
-
 	@setupList sudo dnf install - ${PKG_DNF[@]}
-
-	# default editor...
-	@ sudo dnf install vim-default-editor --allowerasing
 }
 
 
@@ -295,6 +293,14 @@ function feature-start-services(){
 function feature-start-user-services(){
 	@setupList sudo systemctl --user enable - ${SERVICES_USER_START[@]}
 	@setupList sudo systemctl --user start - ${SERVICES_USER_START[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-vim(){
+	@ sudo dnf install vim gvim
+	# default editor...
+	@ sudo dnf install vim-default-editor --allowerasing
 }
 
 
@@ -369,6 +375,7 @@ function feature-syncthing(){
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# XXX needs a bit more setup...
 function feature-snapshots(){ (
 	@ dnf install snapper python3-dnf-plugin-snapper
 	@ sudo snapper -c root create-config /
