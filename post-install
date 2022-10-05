@@ -120,7 +120,7 @@ PKG_DNF=(
 
 	# tools...
 	openssl gpm  
-	mc tmux bat htop cpu-x
+	mc tmux bat htop ncdu cpu-x
 	keepassxc
 
 	# tty fonts...
