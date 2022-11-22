@@ -125,8 +125,15 @@ PKG_DNF=(
 	keepassxc
 
 	# tty fonts...
-	#	/etc/vconsole.conf -- FONT=...
+	#	/etc/vconsole.conf
+	#		FONT="ter-v24n"
 	#	/etc/defaults/grub -- kernel options, add: vconsole.font=...
+	#		GRUB_TERMINAL_OUTPUT="gfxterm"
+	#		# $ sudo grub2-mkfont \
+	#		#		--output=/boot/efi/EFI/fedora/fonts/ter-u32n.pf2 \
+	#		#		/usr/share/fonts/terminus-fonts/ter-u32n.otb
+	#		GRUB_FONT="/boot/efi/EFI/fedora/fonts/ter-u32n.pf2"
+	#		GRUB_CMDLINE_LINUX=""
 	# XXX should we also add a feature to set these up???
 	terminus-fonts
 	terminus-fonts-console
@@ -730,4 +737,4 @@ done
 
 
 #----------------------------------------------------------------------
-# vim:set ts=4 sw=4 spell nowrap :
+# vim:set ts=4 sw=4 nowrap :
