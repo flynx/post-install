@@ -40,7 +40,7 @@ USER_SCRIPT_DIR=${0}.d/user/
 # System info...
 if ! [ -z "$(type -t dmidecode )" ] ; then
 	# XXX should we be more specific here and include model number??
-	PLATFORM=$( dmidecode \
+	PLATFORM=$( sudo dmidecode \
 		| grep -A3 '^System Information' \
 		| grep 'Version:' \
 		| sed 's/\s*Version:\s*//' )
@@ -59,6 +59,7 @@ PLATFORM_SCRIPT_DIR=${SCRIPT_DIR}/platform/${PLATFORM}
 FEATURES=(
 	dir
 
+	dnf-config
 	dnf
 	flatpak
 	npm
@@ -207,6 +208,7 @@ SAVE=(
 # XXX this should be split into system and user sections...
 ALL_FEATURES=(
 	# system...
+	dnf-config
 	dnf
 	flatpak
 	snap
@@ -215,7 +217,7 @@ ALL_FEATURES=(
 
 	start-services
 
-	# user..
+	# user...
 
 	dir
 	syncthing
@@ -226,11 +228,31 @@ ALL_FEATURES=(
 
 	start-user-services
 
+	gnome
+
 	# keep this last...
 	scripts
 	platform-scripts
 	user-scripts
 )
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-dnf-config(){
+	if [ -z "$(grep 'f_lynx/post-install' /etc/dnf/dnf.conf)" ] ; then
+		echo Updating config
+		# a bit ugly...
+		cat << EOF | sudo tee -a /etc/dnf/dnf.conf > /dev/null
+
+# added by f_lynx/post-install script...
+fastmirror=True
+max_parallel_downloads=10
+defaultyes=True
+EOF
+	else
+		echo Already updated.
+	fi
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -369,8 +391,8 @@ function feature-syncthing(){
 	#			- link device
 	#			- share ALL directory
 	#			- wait for sync
-	@ echo "Waiting for Syncthing to be connected with other devices manually."
-	@ read -p "(press any key when done)"
+	echo "Waiting for Syncthing to be connected with other devices manually."
+	read -p "(press any key when done)"
 }
 
 
@@ -537,28 +559,29 @@ function printhelp(){ cat << EOF
 Usage: $CMD [OPTIONS]
 
 Options:
-    -h | --help         - print this message and exit.
-    -d | --dry-run      - report the actions but do nothing.
-    -q | --quiet        - run in quiet mode.
+    -h | --help             - print this message and exit.
+    -d | --dry-run          - report the actions but do nothing.
+    -q | --quiet            - run in quiet mode.
 
-    --list-features     - list enabled features.
-    --list-all-features - list supported features.
-    --list-scripts      - list available scripts.
+    -l | --list-features    - list enabled features.
+    -la | --list-all-features 
+                            - list supported features.
+    -ls | --list-scripts    - list available scripts.
 
 External configuration:
-    -s | --source FILE  - read config from file.
-                          (this flag can be used multiple times)
-    -o | --output FILE  - write config to file.
+    -s | --source FILE      - read config from file.
+                              (this flag can be used multiple times)
+    -o | --output FILE      - write config to file.
 
 Feature list manipulation:
-    -all                - clear features
-    +all                - reset features to \$ALL_FEATURES
-    -FEATURE            - remove FEATURE from list
-    +FEATURE            - add FEATURE to lost
+    -all                    - clear features
+    +all                    - reset features to \$ALL_FEATURES
+    -FEATURE                - remove FEATURE from list
+    +FEATURE                - add FEATURE to lost
 
 Helpers:
-    --make-platform-dir - make platform directory for current platform
-                          and exit.
+    --make-platform-dir     - make platform directory for current platform
+                              and exit.
 
 
 Default features:
@@ -597,15 +620,15 @@ while ! [ -z "$1" ] ; do
 			;;
 
 		# introspection...
-		--list-features)
+		-l|--list-features)
 			echo ${FEATURES[@]}
 			exit
 			;;
-		--list-all-features)
+		-la|--list-all-features)
 			echo ${ALL_FEATURES[@]}
 			exit
 			;;
-		--list-scripts)
+		-ls|--list-scripts)
 			listScripts
 			exit
 			;;
