@@ -38,17 +38,19 @@ SCRIPT_DIR=${0}.d/
 USER_SCRIPT_DIR=${0}.d/user/
 
 # System info...
-if ! [ -z "$(type -t dmidecode )" ] ; then
-	# XXX should we be more specific here and include model number??
-	PLATFORM=$( sudo dmidecode \
-		| grep -A3 '^System Information' \
-		| grep 'Version:' \
-		| sed 's/\s*Version:\s*//' )
-else
-	PLATFORM=unknown
-fi
+function systemInfo(){
+	if ! [ -z "$(type -t dmidecode )" ] ; then
+		# XXX should we be more specific here and include model number??
+		PLATFORM=$( sudo dmidecode \
+			| grep -A3 '^System Information' \
+			| grep 'Version:' \
+			| sed 's/\s*Version:\s*//' )
+	else
+		PLATFORM=unknown
+	fi
 
-PLATFORM_SCRIPT_DIR=${SCRIPT_DIR}/platform/${PLATFORM}
+	PLATFORM_SCRIPT_DIR=${SCRIPT_DIR}/platform/${PLATFORM}
+}
 
 
 
@@ -133,7 +135,9 @@ PKG_DNF=(
 	#		#		--output=/boot/efi/EFI/fedora/fonts/ter-u32n.pf2 \
 	#		#		/usr/share/fonts/terminus-fonts/ter-u32n.otb
 	#		GRUB_FONT="/boot/efi/EFI/fedora/fonts/ter-u32n.pf2"
-	#		GRUB_CMDLINE_LINUX=""
+	#		# XXX this sees to have no effect until /etc/vconsole.conf is 
+	#		# 		loaded...
+	#		GRUB_CMDLINE_LINUX="... vconsole.font=ter-v24n"
 	# XXX should we also add a feature to set these up???
 	terminus-fonts
 	terminus-fonts-console
@@ -242,6 +246,41 @@ ALL_FEATURES=(
 	platform-scripts
 	user-scripts
 )
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# For more info see:
+# 	https://fedoramagazine.org/hibernation-in-fedora-36-workstation/
+function feature-hibernate(){
+	# a service to disable zram before we hibernate...
+	# XXX do we need to enable the swap here too???
+	cat <<-EOF | sudo tee /etc/systemd/system/hibernate-preparation.service
+[Unit]
+Description=Disable zram before hibernate
+Before=systemd-hibernate.service
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/sbin/swapoff /dev/zram0
+
+[Install]
+WantedBy=systemd-hibernate.service
+EOF
+	@ sudo systemctl enable hibernate-preparation.service
+
+	# disable some memory checks...
+	mkdir -p /etc/systemd/system/systemd-logind.service.d/
+	@ cat <<-EOF | sudo tee /etc/systemd/system/systemd-logind.service.d/override.conf
+[Service]
+Environment=SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK=1
+EOF
+	@ sudo mkdir -p /etc/systemd/system/systemd-hibernate.service.d/
+	@ cat <<-EOF | sudo tee /etc/systemd/system/systemd-hibernate.service.d/override.conf
+[Service]
+Environment=SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK=1
+EOF
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -444,6 +483,7 @@ function feature-scripts(){ (
 ) }
 
 function feature-platform-scripts(){
+	systemInfo
 	feature-scripts "$PLATFORM_SCRIPT_DIR"
 }
 
@@ -656,6 +696,7 @@ while ! [ -z "$1" ] ; do
 
 		# helpers...
 		--make-platform-dir)
+			systemInfo
 			echo "# Patform script dir: $PLATFORM_SCRIPT_DIR"
 			[ -d "$PLATFORM_SCRIPT_DIR" ] \
 				|| @ mkdir -p "$PLATFORM_SCRIPT_DIR"
