@@ -45,6 +45,8 @@ function systemInfo(){
 			| grep -A3 '^System Information' \
 			| grep 'Version:' \
 			| sed 's/\s*Version:\s*//' )
+	elif ! [ -z "$(type -t uname )" ] ; then
+		PLATFORM=$(uname -o)
 	else
 		PLATFORM=unknown
 	fi
@@ -350,7 +352,9 @@ function feature-vim(){
 function feature-keyd(){ (
 	@ mkdir -p ~/work/EXTERNAL
 	@ cd ~/work/EXTERNAL
-	@ git clone https://github.com/rvaiya/keyd
+	if ! [ -d keyd ] ; then
+		@ git clone https://github.com/rvaiya/keyd
+	fi
 	@ cd keyd
 	@ make \
 		&& @ sudo make install
@@ -366,7 +370,9 @@ function feature-keyd(){ (
 function feature-bashctrl(){ (
 	@ mkdir -p ~/work/
 	@ cd ~/work/
-	@ git clone git@github.com:flynx/bashctrl
+	if ! [ -d bashctrl ] ; then
+		@ git clone git@github.com:flynx/bashctrl
+	fi
 	@ cd bashctrl
 	@ ./bashctrl -y setup
 ) }
@@ -425,7 +431,9 @@ function feature-snapshots(){ (
 	@ sudo snapper -c boot create-config /boot
 
 	@ cd ~/work/EXTERNAL/
-	@ git clone https://github.com/Antynea/grub-btrfs.git
+	if ! [ -d grub-btrfs ] ; then
+		@ git clone https://github.com/Antynea/grub-btrfs.git
+	fi
 	@ cd grub-btrfs
 	@ sudo make install
 ) }
@@ -433,6 +441,7 @@ function feature-snapshots(){ (
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # XXX skip scripts starting in "-" 
+# XXX make the scripts support the same syntax as features...
 function feature-scripts(){ (
 	if ! [ -z "$1" ] ; then
 		local dir=$1
@@ -603,6 +612,8 @@ Feature list manipulation:
 Helpers:
     --make-platform-dir     - make platform directory for current platform
                               and exit.
+                              Location: 
+                                  ${SCRIPT_DIR}/platform/NAME
 
 
 Default features:
