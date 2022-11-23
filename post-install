@@ -215,37 +215,11 @@ SAVE=(
 #----------------------------------------------------------------------
 # Builtin features...
 
-# default 
-# XXX this should be split into system and user sections...
-ALL_FEATURES=(
-	# system...
-	dnf-config
-	dnf
-	flatpak
-	snap
-	npm
-	vim
-
-	start-services
-
-	# user...
-
-	dir
-	syncthing
-	bashctrl
-
-	user-link
-	user-copy
-
-	start-user-services
-
-	gnome
-
-	# keep this last...
-	scripts
-	platform-scripts
-	user-scripts
-)
+ALL_FEATURES=($( \
+	cat $0 \
+		| grep '^function feature-' \
+		| sed 's/function feature-\([^(]*\)(.*$/\1/' \
+		| sort))
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
