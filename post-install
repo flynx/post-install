@@ -131,6 +131,8 @@ PKG_DNF=(
 	mc ranger tmux bat htop ncdu cpu-x glances stacer
 	keepassxc
 
+	# fonts...
+	mscore-fonts-all
 	# tty fonts...
 	#	/etc/vconsole.conf
 	#		FONT="ter-v24n"
