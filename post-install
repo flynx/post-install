@@ -64,6 +64,9 @@ FEATURES=(
 	dir
 
 	dnf-config
+	rpmfusion
+	flathub
+
 	dnf
 	flatpak
 	npm
@@ -160,6 +163,12 @@ PKG_DNF=(
 
 	# apps...
 	krita
+	# XXX needed for OBS' virtual camera + requires rpmfusion
+	#		$ sudo dnf install \
+	#			https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+	#		$ sudo dnf install \
+	#			https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+	# v4l2loopback
 )
 
 PKG_NPM=(
@@ -311,9 +320,23 @@ function feature-npm(){
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function feature-flatpak(){
+function feature-rpmfusion(){
+	@ sudo dnf install \
+		https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
+	@ sudo dnf install \
+		https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-flathub(){
 	@ sudo flatpak remote-add --if-not-exists flathub \
 		https://flathub.org/repo/flathub.flatpakrepo
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-flatpak(){
 	@setupList sudo flatpak install - ${PKG_FLATPAK[@]}
 }
 
