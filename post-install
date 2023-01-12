@@ -125,6 +125,7 @@ PKG_DNF=(
 	# networking...
 	cronie tor obfs4 
 	youtube-dl qbittorrent
+	perl-Image-ExifTool
 
 	# tools...
 	openssl gpm  
