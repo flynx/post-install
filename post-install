@@ -153,8 +153,9 @@ PKG_DNF=(
 
 	# dev...
 	vifm 
-	git nodejs
+	git 
 	p7zip zip unrar
+	nodejs golang
 
 	# media...
 	vlc mpv
@@ -202,6 +203,10 @@ PKG_SNAP=(
 	irfanview
 	foobar2000
 	snap-store 
+)
+
+PKG_GO=(
+	github.com/charmbracelet/gum@latest
 )
 
 
@@ -349,6 +354,13 @@ function feature-snap(){
 	@ sudo dnf install snapd
 	@ sudo ln -s /var/lib/snapd/snap /snap
 	@setupList sudo snap install - ${PKG_SNAP[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-go(){
+	@ sudo dnf install golang
+	@setupList sudo go install - ${PKG_GO[@]}
 }
 
 
