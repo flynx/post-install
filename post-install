@@ -417,6 +417,17 @@ function feature-bashctrl(){ (
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-gamma(){
+	@ mkdir -p ~/work/EXTERNAL/
+	@ cd ~/work/EXTERNAL/
+	if ! [ -d bashctrl ] ; then
+		@ git clone https://github.com/zb3/gnome-gamma-tool
+	fi
+	@ cd gnome-gamma-tool/
+	@ ./gnome-gamma-tool.py -g 1.15
+}
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-far(){
 	@ sudo dnf copr enable polter/far2l	
 	@ sudo dnf install far2l far2l-tty
