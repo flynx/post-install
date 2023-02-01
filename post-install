@@ -246,13 +246,13 @@ ALL_FEATURES=($( \
 # 	https://fedoramagazine.org/hibernation-in-fedora-36-workstation/
 function feature-hibernate(){
 	# dracut configuration...
-	cat <<-EOF | sudo tee /etc/dracut.conf.d/resume.conf
+	@ cat <<-EOF | sudo tee /etc/dracut.conf.d/resume.conf
 add_dracutmodules+=" resume "
 EOF
-	dracut -f
+	@ dracut -f
 	# a service to disable zram before we hibernate...
 	# XXX do we need to enable the swap here too???
-	cat <<-EOF | sudo tee /etc/systemd/system/hibernate-preparation.service
+	@ cat <<-EOF | sudo tee /etc/systemd/system/hibernate-preparation.service
 [Unit]
 Description=Disable zram before hibernate
 Before=systemd-hibernate.service
@@ -496,21 +496,17 @@ function feature-snapshots(){ (
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # XXX needs a bit more setup...
 function feature-s1yoga-fix-touchpad-resume(){
-	cat <<-EOF | sudo tee /etc/systemd/system/fix-touchpad-on-resume.service
-[Unit]
-Description=Fix touchpad after resume on ThinkPad S1 Yoga
-After=suspend.target
+	
+	@ cat <<-EOF | sudo tee /usr/lib/systemd/system-sleep/fix-touchpad
+#!/bin/sh
 
-[Service]
-User=root
-Type=oneshot
-ExecStart=modprobe -r i2c_i801 && modprobe i2c_i801
-
-[Install]
-WantedBy=suspend.target
+# fixes an issue where the touchpad stops working after suspend/hibernate... 
+if [ "${1}" == "post" ] ; then
+	modprobe -r i2c_i801
+	sleep 3
+	modprobe i2c_i801
+fi
 EOF
-
-	@ sudo systemctl enable fix-touchpad-on-resume.service
 }
 
 
