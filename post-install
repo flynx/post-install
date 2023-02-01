@@ -15,6 +15,9 @@
 #		- tasks -- each can consist of configuration and several packages...
 #
 #
+# XXX @ does not work with cat <<EOF | ...
+#
+#
 #----------------------------------------------------------------------
 # options...
 
@@ -246,13 +249,13 @@ ALL_FEATURES=($( \
 # 	https://fedoramagazine.org/hibernation-in-fedora-36-workstation/
 function feature-hibernate(){
 	# dracut configuration...
-	@ cat <<-EOF | sudo tee /etc/dracut.conf.d/resume.conf
+	cat <<-EOF | sudo tee /etc/dracut.conf.d/resume.conf
 add_dracutmodules+=" resume "
 EOF
 	@ dracut -f
 	# a service to disable zram before we hibernate...
 	# XXX do we need to enable the swap here too???
-	@ cat <<-EOF | sudo tee /etc/systemd/system/hibernate-preparation.service
+	cat <<-EOF | sudo tee /etc/systemd/system/hibernate-preparation.service
 [Unit]
 Description=Disable zram before hibernate
 Before=systemd-hibernate.service
@@ -269,12 +272,12 @@ EOF
 
 	# disable some memory checks...
 	mkdir -p /etc/systemd/system/systemd-logind.service.d/
-	@ cat <<-EOF | sudo tee /etc/systemd/system/systemd-logind.service.d/override.conf
+	cat <<-EOF | sudo tee /etc/systemd/system/systemd-logind.service.d/override.conf
 [Service]
 Environment=SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK=1
 EOF
 	@ sudo mkdir -p /etc/systemd/system/systemd-hibernate.service.d/
-	@ cat <<-EOF | sudo tee /etc/systemd/system/systemd-hibernate.service.d/override.conf
+	cat <<-EOF | sudo tee /etc/systemd/system/systemd-hibernate.service.d/override.conf
 [Service]
 Environment=SYSTEMD_BYPASS_HIBERNATION_MEMORY_CHECK=1
 EOF
@@ -497,7 +500,7 @@ function feature-snapshots(){ (
 # XXX needs a bit more setup...
 function feature-s1yoga-fix-touchpad-resume(){
 	
-	@ cat <<-EOF | sudo tee /usr/lib/systemd/system-sleep/fix-touchpad
+	cat <<-EOF | sudo tee /usr/lib/systemd/system-sleep/fix-touchpad
 #!/bin/sh
 
 # fixes an issue where the touchpad stops working after suspend/hibernate... 
