@@ -507,6 +507,8 @@ if [ "${1}" == "post" ] ; then
 	modprobe i2c_i801
 fi
 EOF
+
+	@ chmod +x /usr/lib/systemd/system-sleep/fix-touchpad
 }
 
 
