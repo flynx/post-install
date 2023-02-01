@@ -188,7 +188,7 @@ PKG_FLATPAK=(
 
 	# net...
 	org.briarproject.Briar
-	com.github.ElostonUngoogledChromium
+	com.github.Eloston.UngoogledChromium
 
 	# media...
 	#io.mpv.Mpv
@@ -245,6 +245,11 @@ ALL_FEATURES=($( \
 # For more info see:
 # 	https://fedoramagazine.org/hibernation-in-fedora-36-workstation/
 function feature-hibernate(){
+	# dracut configuration...
+	cat <<-EOF | sudo tee /etc/dracut.conf.d/resume.conf
+add_dracutmodules+=" resume "
+EOF
+	dracut -f
 	# a service to disable zram before we hibernate...
 	# XXX do we need to enable the swap here too???
 	cat <<-EOF | sudo tee /etc/systemd/system/hibernate-preparation.service
@@ -486,6 +491,27 @@ function feature-snapshots(){ (
 	@ cd grub-btrfs
 	@ sudo make install
 ) }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# XXX needs a bit more setup...
+function feature-s1yoga-fix-touchpad-resume(){
+	cat <<-EOF | sudo tee /etc/systemd/system/fix-touchpad-on-resume.service
+[Unit]
+Description=Fix touchpad after resume on ThinkPad S1 Yoga
+After=suspend.target
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=modprobe -r i2c_i801 && modprobe i2c_i801
+
+[Install]
+WantedBy=suspend.target
+EOF
+
+	@ sudo systemctl enable fix-touchpad-on-resume.service
+}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
