@@ -2,6 +2,8 @@
 #----------------------------------------------------------------------
 #
 # TODO:
+#	- keyd -- copy config from syncthing...
+#	- tor (user) + link cfg
 #	- link config files
 #	- copy config files
 #	- edit system config files
@@ -82,8 +84,8 @@ FEATURES=(
 	syncthing
 
 	# these can depend on some services like syncthing...
-	user-link
-	user-copy
+	#user-link
+	#user-copy
 
 	scripts
 	platform-scripts
@@ -300,7 +302,7 @@ function feature-dnf-config(){
 	if [ -z "$(grep 'f_lynx/post-install' /etc/dnf/dnf.conf)" ] ; then
 		echo Updating config
 		# a bit ugly...
-		cat << EOF | sudo tee -a /etc/dnf/dnf.conf > /dev/null
+		cat <<-EOF | sudo tee -a /etc/dnf/dnf.conf > /dev/null
 
 # added by f_lynx/post-install script...
 fastmirror=True
@@ -320,17 +322,19 @@ function feature-dir(){
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function feature-user-link(){
-	# XXX
-	true
-}
+# link user files/dirs (syncthing, ...)...
+##function feature-user-link(){
+##	# XXX
+##	true
+##}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function feature-user-copy(){
-	# XXX
-	true
-}
+# copy user files/dirs (syncthing, ...)...
+##function feature-user-copy(){
+##	# XXX
+##	true
+##}
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -372,6 +376,9 @@ function feature-flatpak(){
 function feature-snap(){
 	@ sudo dnf install snapd
 	@ sudo ln -s /var/lib/snapd/snap /snap
+	# this is here to compensate for snap not being ready right away...
+	# ...did not dig into why...
+	@ sleep 5
 	@setupList sudo snap install - ${PKG_SNAP[@]}
 }
 
@@ -509,9 +516,11 @@ function feature-snapshots(){ (
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # XXX needs a bit more setup...
-function feature-s1yoga-fix-touchpad-resume(){
+function feature-s1yoga-touchpad(){
 	
-	cat <<-EOF | sudo tee /usr/lib/systemd/system-sleep/fix-touchpad
+	# XXX detect hardware and abort setup on non-compatible machines...
+
+	cat <<EOF | sudo tee /usr/lib/systemd/system-sleep/fix-touchpad
 #!/bin/sh
 
 # fixes an issue where the touchpad stops working after suspend/hibernate... 
@@ -525,6 +534,19 @@ EOF
 	@ chmod +x /usr/lib/systemd/system-sleep/fix-touchpad
 }
 
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# XXX are these the same thing???
+#		- suspend does not work...
+#		- hibernate works on the second try only...
+function feature-s1yoga-syspend(){
+	# XXX did not figure this one out yet...
+}
+function feature-s1yoga-hibernate(){
+	# XXX did not figure this one out yet...
+	# XXX HACK (will this work?)
+	#		if hibernate fails retry once
+	#		if second try fails beep
+}
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # XXX skip scripts starting in "-" 
