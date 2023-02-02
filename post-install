@@ -163,6 +163,17 @@ PKG_DNF=(
 	# media...
 	vlc mpv
 
+	# codecs...
+	gstreamer1-plugin-openh264
+	gstreamer1-plugins-bad-free
+	gstreamer1-plugins-bad-freeworld
+	gstreamer1-plugins-base
+	gstreamer1-plugins-good
+	gstreamer1-plugins-good-gtk
+	gstreamer1-plugins-good-qt
+	gstreamer1-plugins-ugly
+	gstreamer1-plugins-ugly-free
+
 	# desktop...
 	ulauncher 
 	gnome-tweaks 
@@ -504,7 +515,7 @@ function feature-s1yoga-fix-touchpad-resume(){
 #!/bin/sh
 
 # fixes an issue where the touchpad stops working after suspend/hibernate... 
-if [ "${1}" == "post" ] ; then
+if [ "$${1}" == "post" ] ; then
 	modprobe -r i2c_i801
 	sleep 3
 	modprobe i2c_i801
