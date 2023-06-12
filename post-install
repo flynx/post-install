@@ -134,7 +134,7 @@ PKG_DNF=(
 
 	# tools...
 	openssl gpm  
-	mc ranger tmux bat htop ncdu cpu-x glances stacer
+	mc ranger tmux bat htop iftop iotop ncdu cpu-x glances stacer
 	keepassxc
 
 	# fonts...
