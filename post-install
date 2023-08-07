@@ -129,7 +129,7 @@ PKG_DNF=(
 
 	# networking...
 	cronie tor obfs4 
-	youtube-dl qbittorrent
+	yt-dlp qbittorrent
 	perl-Image-ExifTool
 
 	# tools...
