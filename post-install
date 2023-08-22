@@ -136,6 +136,7 @@ PKG_DNF=(
 	openssl gpm  
 	mc ranger tmux bat htop iftop iotop ncdu cpu-x glances stacer
 	keepassxc
+	tilix
 
 	# fonts...
 	mscore-fonts-all
