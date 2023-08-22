@@ -134,9 +134,12 @@ PKG_DNF=(
 
 	# tools...
 	openssl gpm  
-	mc ranger tmux bat htop iftop iotop ncdu cpu-x glances stacer
+	mc ranger tmux bat 
+	htop iftop iotop 
+	ncdu cpu-x glances stacer
 	keepassxc
 	tilix
+	nextcloud-client
 
 	# fonts...
 	mscore-fonts-all
