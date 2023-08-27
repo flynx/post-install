@@ -138,6 +138,7 @@ PKG_DNF=(
 	mc ranger tmux bat 
 	htop iftop iotop 
 	ncdu cpu-x glances stacer
+	jdupes
 	keepassxc
 	tilix
 	nextcloud-client
