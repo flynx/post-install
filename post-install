@@ -445,6 +445,30 @@ function feature-keyd(){ (
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-libinput-config(){ (
+	@ sudo dnf install libinput libinput-devel systemd-devel
+	@ mkdir -p ~/work/EXTERNAL
+	@ cd ~/work/EXTERNAL
+	if ! [ -d libinput-config ] ; then
+		@ git clone https://gitlab.com/warningnonpotablewater/libinput-config.git
+	fi
+	@ cd libinput-config
+	@ meson build
+	@ cd build
+	@ ninja
+	@ sudo ninja install
+
+	# config...
+	cat <<-EOF | sudo tee -a /etc/libinput.conf > /dev/null
+
+scroll-factor=0.2
+
+EOF
+
+) }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-bashctrl(){ (
 	@ mkdir -p ~/work/
 	@ cd ~/work/
@@ -554,12 +578,14 @@ EOF
 #		- hibernate works on the second try only...
 function feature-s1yoga-syspend(){
 	# XXX did not figure this one out yet...
+	true
 }
 function feature-s1yoga-hibernate(){
 	# XXX did not figure this one out yet...
 	# XXX HACK (will this work?)
 	#		if hibernate fails retry once
 	#		if second try fails beep
+	true 
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
