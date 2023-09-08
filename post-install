@@ -445,6 +445,7 @@ function feature-keyd(){ (
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# see: https://www.reddit.com/r/Fedora/comments/qn0o9w/adjust_touchpad_scroll_speed_enable_mouse_wheel/ 
 function feature-libinput-config(){ (
 	@ sudo dnf install libinput libinput-devel systemd-devel
 	@ mkdir -p ~/work/EXTERNAL
