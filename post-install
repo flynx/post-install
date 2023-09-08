@@ -427,6 +427,8 @@ function feature-vim(){
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# see:
+# 	https://github.com/rvaiya/keyd
 function feature-keyd(){ (
 	@ mkdir -p ~/work/EXTERNAL
 	@ cd ~/work/EXTERNAL
@@ -445,7 +447,9 @@ function feature-keyd(){ (
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-# see: https://www.reddit.com/r/Fedora/comments/qn0o9w/adjust_touchpad_scroll_speed_enable_mouse_wheel/ 
+# see: 
+# 	https://gitlab.com/warningnonpotablewater/libinput-config
+# 	https://www.reddit.com/r/Fedora/comments/qn0o9w/adjust_touchpad_scroll_speed_enable_mouse_wheel/ 
 function feature-libinput-config(){ (
 	@ sudo dnf install libinput libinput-devel systemd-devel
 	@ mkdir -p ~/work/EXTERNAL
