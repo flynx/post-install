@@ -140,7 +140,8 @@ PKG_DNF=(
 	ncdu cpu-x glances stacer
 	jdupes
 	keepassxc
-	tilix
+	alacritty
+	#tilix
 	nextcloud-client
 
 	# fonts...
