@@ -140,8 +140,8 @@ PKG_DNF=(
 	ncdu cpu-x glances stacer
 	jdupes
 	keepassxc
-	alacritty
-	#tilix
+	#alacritty
+	kitty
 	nextcloud-client
 
 	# fonts...
@@ -465,13 +465,11 @@ function feature-libinput-config(){ (
 	@ sudo ninja install
 
 	# config...
+	# for more info on options see: 
+	#   https://gitlab.com/warningnonpotablewater/libinput-config
 	cat <<-EOF | sudo tee -a /etc/libinput.conf > /dev/null
-# for more info on options see: 
-#   https://gitlab.com/warningnonpotablewater/libinput-config
-
 scroll-factor=0.2
 gesture-speed=1.5
-
 EOF
 
 ) }
