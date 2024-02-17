@@ -468,7 +468,8 @@ function feature-libinput-config(){ (
 	# for more info on options see: 
 	#   https://gitlab.com/warningnonpotablewater/libinput-config
 	cat <<-EOF | sudo tee -a /etc/libinput.conf > /dev/null
-scroll-factor=0.2
+dwt=enabled
+scroll-factor=0.3
 gesture-speed=1.5
 EOF
 
