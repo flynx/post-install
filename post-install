@@ -125,13 +125,27 @@ CFG_USER_COPY=(
 
 
 PKG_DNF=( 
+	# system...
+	cronie 
+
+	# graphics...
+	# install, run vainfo and install the missing driver, e.g. intel-media-driver
+	# also see: https://github.com/intel/media-driver#known-issues-and-limitations for codec support
+	libva-utils
+	#intel-media-driver
+
+	# optimizations...
+	# or see: https://github.com/AdnanHodzic/auto-cpufreq
+	#tlp
+
 	# tools and recovery...
 	gparted gdisk testdisk
 
 	# networking...
-	cronie tor obfs4 
+	tor obfs4 
 	yt-dlp qbittorrent
 	perl-Image-ExifTool
+
 
 	# tools...
 	openssl gpm  
