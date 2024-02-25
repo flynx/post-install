@@ -236,8 +236,8 @@ PKG_FLATPAK=(
 	com.github.Eloston.UngoogledChromium
 
 	# media...
-	#io.mpv.Mpv
-	#org.videolan.VLC
+	fr.handbrake.ghb
+	fr.handbrake.ghb.Plugin.IntelMediaSDK
 
 	# tools...
 	ch.openboard.OpenBoard
