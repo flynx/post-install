@@ -150,7 +150,7 @@ PKG_DNF=(
 	# tools...
 	openssl gpm  
 	mc ranger tmux bat 
-	htop iftop iotop 
+	btop htop iftop iotop 
 	ncdu cpu-x glances stacer
 	jdupes
 	keepassxc
@@ -517,6 +517,14 @@ function feature-gamma(){
 function feature-far(){
 	@ sudo dnf copr enable polter/far2l	
 	@ sudo dnf install far2l far2l-tty
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# a disk usage utility...
+function feature-dust(){
+	@ sudo dnf copr enable gourlaysama/dust
+	@ sudo nf install dust
 }
 
 
