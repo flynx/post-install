@@ -154,7 +154,6 @@ PKG_DNF=(
 	ncdu cpu-x glances stacer
 	jdupes
 	keepassxc
-	#alacritty
 	kitty
 	nextcloud-client
 
