@@ -184,6 +184,9 @@ PKG_DNF=(
 
 	# media...
 	vlc mpv
+	ffmpeg
+	mkvtoolnix-gui
+	avidemux
 
 	# codecs...
 	gstreamer1-plugin-openh264
