@@ -149,7 +149,7 @@ PKG_DNF=(
 
 	# tools...
 	openssl gpm  
-	mc ranger tmux bat 
+	mc ranger vifm tmux bat 
 	btop htop iftop iotop 
 	ncdu cpu-x glances stacer
 	jdupes
@@ -177,7 +177,6 @@ PKG_DNF=(
 	terminus-fonts-grub2
 
 	# dev...
-	vifm 
 	git 
 	p7zip zip unrar
 	nodejs golang
