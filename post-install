@@ -525,7 +525,14 @@ function feature-far(){
 # a disk usage utility...
 function feature-dust(){
 	@ sudo dnf copr enable gourlaysama/dust
-	@ sudo nf install dust
+	@ sudo dnf install dust
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-shadowsocks-rust(){
+	@ sudo dnf copr enable spyophobia/shadowsocks-rust
+	@ sudo dnf install shadowsocks-rust
 }
 
 
