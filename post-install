@@ -547,6 +547,9 @@ function feature-gnome(){
 	@ gsettings set org.gnome.desktop.wm.preferences visual-bell true
 	@ gsettings set org.gnome.desktop.wm.preferences visual-bell-type frame-flash
 
+	# per window input selection...
+	@ gsettings set org.gnome.desktop.input-sources.per-window true
+
 	# swap language with alt-shift...
 	# NOTE: with the way the gui is setup not this is not possible to set there...
 	@ gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Alt>Shift_L']"
