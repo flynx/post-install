@@ -132,11 +132,16 @@ PKG_DNF=(
 	# install, run vainfo and install the missing driver, e.g. intel-media-driver
 	# also see: https://github.com/intel/media-driver#known-issues-and-limitations for codec support
 	libva-utils
+
+	# for intel onboard graphics...
+	# testf needed:
+	# 	$ vainfo
 	#intel-media-driver
 
-	# optimizations...
-	# or see: https://github.com/AdnanHodzic/auto-cpufreq
-	#tlp
+	# also see: https://github.com/AdnanHodzic/auto-cpufreq
+	tlp
+	acpi
+	smartmontools
 
 	# tools and recovery...
 	gparted gdisk testdisk
