@@ -477,6 +477,7 @@ function feature-keyd-quirk(){ (
 		return
 	fi
 	# install...
+	@ sudo mkdir -p "$(dirname "$QUIRKS_FILE")"
 	cat <<-EOF | sudo tee -a "$QUIRKS_FILE" > /dev/null
 [keyd]
 MatchUdevType=keyboard
