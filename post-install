@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 #----------------------------------------------------------------------
 #
 # TODO:
@@ -450,7 +450,8 @@ function feature-vim(){
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # see:
 # 	https://github.com/rvaiya/keyd
-function feature-keyd(){ (
+# XXX copy config: /etc/keyd/<keyboard-id>.conf...
+function feature-keyd-source(){ (
 	@ mkdir -p ~/work/EXTERNAL
 	@ cd ~/work/EXTERNAL
 	if ! [ -d keyd ] ; then
@@ -462,8 +463,26 @@ function feature-keyd(){ (
 	@ sudo systemctl enable keyd \
 		&& @ sudo systemctl start keyd
 
-	# XXX copy config: /etc/keyd/<keyboard-id>.conf...
-
+) }
+function feature-keyd(){ (
+	@ sudo dnf copr enable alternateved/keyd
+	@ sudo dnf install keyd
+) }
+function feature-keyd-quirk(){ (
+	local QUIRKS_FILE=/etc/libinput/local-overrides.quirks
+	# check if already installed...
+	if [ -e "$QUIRKS_FILE" ] \
+			&& grep -q '\[keyd\]' "$QUIRKS_FILE" ; then
+		echo "File \"$QUIRKS_FILE\" already exists and contains \"[keyd]\" section, aborting." 1>&2 
+		return
+	fi
+	# install...
+	cat <<-EOF | sudo tee -a "$QUIRKS_FILE" > /dev/null
+[keyd]
+MatchUdevType=keyboard
+MatchName=keyd virtual keyboard
+AttrKeyboardIntegration=internal
+EOF
 ) }
 
 
