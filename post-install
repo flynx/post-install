@@ -468,6 +468,7 @@ function feature-keyd(){ (
 	@ sudo dnf copr enable alternateved/keyd
 	@ sudo dnf install keyd
 ) }
+# see: https://wayland.freedesktop.org/libinput/doc/latest/palm-detection.html
 function feature-keyd-quirk(){ (
 	local QUIRKS_FILE=/etc/libinput/local-overrides.quirks
 	# check if already installed...
