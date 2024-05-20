@@ -134,7 +134,7 @@ PKG_DNF=(
 	libva-utils
 
 	# for intel onboard graphics...
-	# testf needed:
+	# test if needed:
 	# 	$ vainfo
 	#intel-media-driver
 
