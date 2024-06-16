@@ -489,6 +489,18 @@ EOF
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# to update:
+# 	$ cd /opt/ventoy && ./VentoyGUI.x86_64
+#
+# see:
+# 	https://copr.fedorainfracloud.org/coprs/karlisk/ventoy/
+function feature-ventoy(){ (
+	@ sudo dnf copr enable karlisk/ventoy
+	@ sudo dnf install ventoy
+) }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # see: 
 # 	https://gitlab.com/warningnonpotablewater/libinput-config
 # 	https://www.reddit.com/r/Fedora/comments/qn0o9w/adjust_touchpad_scroll_speed_enable_mouse_wheel/ 
