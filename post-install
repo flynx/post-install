@@ -207,7 +207,6 @@ PKG_DNF=(
 	# desktop...
 	ulauncher 
 	gnome-tweaks 
-	gnome-shell-extension-gsconnect
 
 	# apps...
 	krita
@@ -236,20 +235,25 @@ PKG_FLATPAK=(
 	# system...
 	com.github.tchx84.Flatseal 
 	com.mattjakeman.ExtensionManager 
+	ca.desrt.dconf-editor
 	io.github.realmazharhussain.GdmSettings
 	org.gustavoperedo.FontDownloader
 
 	# net...
-	org.briarproject.Briar
-	com.github.Eloston.UngoogledChromium
+	#org.briarproject.Briar
+	io.github.ungoogled_software.ungoogled_chromium
+	org.localsend.localsend_app
 
 	# media...
 	fr.handbrake.ghb
 	fr.handbrake.ghb.Plugin.IntelMediaSDK
+	org.avidemux.Avidemux
 
 	# tools...
 	ch.openboard.OpenBoard
+	org.inkscape.Inkscape
 	org.blender.Blender
+	com.github.xournalpp.xournalpp
 )
 
 PKG_SNAP=(
