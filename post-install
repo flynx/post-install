@@ -191,6 +191,7 @@ PKG_DNF=(
 	ffmpeg
 	mkvtoolnix-gui
 	avidemux
+	exiftool exiv2 vips-tools
 
 	# codecs...
 	gstreamer1-plugin-openh264
