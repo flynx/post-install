@@ -187,7 +187,7 @@ PKG_DNF=(
 	nodejs golang
 
 	# media...
-	vlc mpv
+	vlc mpv cmus mpg123
 	ffmpeg
 	mkvtoolnix-gui
 	avidemux
