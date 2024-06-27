@@ -222,9 +222,10 @@ PKG_DNF=(
 	# Gnome shell extensions...
 	gnome-shell-extension-gsconnect
 	gnome-shell-extension-caffeine
-	gnome-shell-extension-dash-to-dock
+	gnome-shell-extension-dash-to-panel
 	gnome-shell-extension-blur-my-shell
-	#gnome-shell-extension-just-perfection
+	gnome-shell-extension-appindicator
+	gnome-shell-extension-just-perfection
 )
 
 PKG_NPM=(
