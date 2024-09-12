@@ -130,7 +130,11 @@ PKG_DNF=(
 
 	# graphics...
 	# install, run vainfo and install the missing driver, e.g. intel-media-driver
-	# also see: https://github.com/intel/media-driver#known-issues-and-limitations for codec support
+	#
+	# XXX behaves in an odd way, not sure about this yet...
+	#
+	# also see: 
+	# 	https://github.com/intel/media-driver#known-issues-and-limitations for codec support
 	libva-utils
 
 	# for intel onboard graphics...
