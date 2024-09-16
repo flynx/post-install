@@ -135,12 +135,13 @@ PKG_DNF=(
 	#
 	# also see: 
 	# 	https://github.com/intel/media-driver#known-issues-and-limitations for codec support
-	libva-utils
+	libva libva-utils gstreamer1-vaapi
 
 	# for intel onboard graphics...
+	# 	https://discussion.fedoraproject.org/t/intel-graphics-best-practices-and-settings-for-hardware-acceleration/69944
 	# test if needed:
 	# 	$ vainfo
-	#intel-media-driver
+	#intel-media-driver  intel-gpu-tools mesa-dri-drivers mpv
 
 	# also see: https://github.com/AdnanHodzic/auto-cpufreq
 	tlp
