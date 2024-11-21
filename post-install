@@ -159,13 +159,15 @@ PKG_DNF=(
 
 	# tools...
 	openssl gpm  
-	mc ranger vifm tmux bat 
+	mc ranger vifm nnn tmux bat 
 	btop htop iftop iotop 
 	ncdu cpu-x glances stacer
 	jdupes fdupes
 	keepassxc
 	kitty
 	nextcloud-client
+	# XXX not sure if this supports Wayland...
+	#flameshot
 
 	# fonts...
 	mscore-fonts-all
