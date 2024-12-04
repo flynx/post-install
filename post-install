@@ -139,6 +139,7 @@ PKG_DNF=(
 
 	# for intel onboard graphics...
 	# 	https://discussion.fedoraproject.org/t/intel-graphics-best-practices-and-settings-for-hardware-acceleration/69944
+	# 	https://rpmfusion.org/Howto/Multimedia
 	# test if needed:
 	# 	$ vainfo
 	#intel-media-driver  intel-gpu-tools mesa-dri-drivers mpv
@@ -160,6 +161,7 @@ PKG_DNF=(
 	# tools...
 	openssl gpm  
 	mc ranger vifm nnn tmux bat 
+	p7zip zip unrar
 	btop htop iftop iotop 
 	ncdu cpu-x glances stacer
 	jdupes fdupes
@@ -190,7 +192,6 @@ PKG_DNF=(
 
 	# dev...
 	git 
-	p7zip zip unrar
 	nodejs golang
 
 	# media...
