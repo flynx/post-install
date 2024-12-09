@@ -160,7 +160,7 @@ PKG_DNF=(
 
 	# tools...
 	openssl gpm  
-	mc ranger vifm nnn tmux bat tree
+	mc vifm nnn tmux bat tree
 	p7zip zip unrar zstd
 	btop htop iftop iotop 
 	ncdu cpu-x glances stacer
