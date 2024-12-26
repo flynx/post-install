@@ -13,6 +13,7 @@
 #	- profile packager/extractor???
 #
 # XXX should we split this into user/system config???
+# 		...if yes, how do we store user config???
 # XXX might be a good idea to add scripts for more high-level things like:
 # 		setup system 
 # 			-> setup account 
