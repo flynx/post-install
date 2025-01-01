@@ -167,7 +167,7 @@ PKG_DNF=(
 	ncdu cpu-x glances stacer
 	jdupes fdupes
 	keepassxc
-	kitty
+	kitty #ghostty
 	nextcloud-client
 	# XXX not sure if this supports Wayland...
 	#flameshot
