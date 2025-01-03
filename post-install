@@ -12,8 +12,7 @@
 #	- add --system and --user flags to only do system/user stuff...
 #	- profile packager/extractor???
 #
-# XXX should we split this into user/system config???
-# 		...if yes, how do we store user config???
+# XXX we should split this into user/system config
 # XXX might be a good idea to add scripts for more high-level things like:
 # 		setup system 
 # 			-> setup account 
