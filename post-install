@@ -173,7 +173,7 @@ PKG_DNF=(
 	ncdu cpu-x glances stacer
 	jdupes fdupes
 	keepassxc
-	kitty
+	kitty #ghostty
 	nextcloud-client
 	# XXX not sure if this supports Wayland...
 	#flameshot
@@ -202,7 +202,7 @@ PKG_DNF=(
 	nodejs golang
 
 	# media...
-	vlc mpv cmus mpg123
+	vlc mpv cmus mpg123 id3v2
 	ffmpeg
 	mkvtoolnix-gui
 	avidemux
