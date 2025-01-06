@@ -22,6 +22,7 @@
 #	A: looks like it would be logical to split this in two:
 #		- general system state and singular tools
 #		- tasks -- each can consist of configuration and several packages...
+# XXX Q: would packing the config files be a good idea??
 #
 #
 #
