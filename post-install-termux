@@ -1,0 +1,38 @@
+#!/usr/bin/bash
+
+# XXX integrate this with post-install...
+
+IFS=$'\n'
+
+PKG=(
+	vim
+
+	golang nodejs
+	git 
+	make cmake
+
+	tmux 
+
+	nnn vifm mc 
+	ncdu fdupes
+	bat tree
+	bash-completion
+	man
+
+	htop 
+
+	curl wget nmap-ncat rsync
+	w3m links 
+	#yt-dlp
+
+	zip unrar zstd p7zip 
+
+	exiftool libvips exiv2
+	ffmpeg mpg123 
+	cmus
+)
+
+pkg upgrade
+
+pkg install "${PKG[@]}"
+
