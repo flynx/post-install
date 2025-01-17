@@ -168,7 +168,7 @@ PKG_DNF=(
 	mc vifm nnn tmux bat tree
 	rsync rclone
 	p7zip zip unrar zstd
-	btop htop atop nvtop iftop iotop #csysdig
+	btop htop atop nvtop iftop iotop #csysdig??
 	perf
 	wavemon
 	ncdu cpu-x glances stacer
