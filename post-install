@@ -127,7 +127,23 @@ CFG_USER_LINK=(
 CFG_USER_COPY=(
 ) 
 
+# general user env tools...
+# XXX add way to alias names for differen platforms...
+PKG_CLI_TOOLS=(
+	bash
+	tmux
 
+	nnn mc tree ncdu 
+	zip zstd unrar
+
+	wget rsync 
+
+	git
+	nodejs golang
+
+	ffmpeg
+	exiftool exiv2 vips-tools
+)
 
 PKG_DNF=( 
 	# system...
@@ -164,6 +180,7 @@ PKG_DNF=(
 
 
 	# tools...
+	# XXX prune with $PKG_CLI_TOOLS...
 	openssl gpm  
 	mc vifm nnn tmux bat tree
 	rsync rclone
@@ -239,6 +256,15 @@ PKG_DNF=(
 	gnome-shell-extension-blur-my-shell
 	gnome-shell-extension-appindicator
 	gnome-shell-extension-just-perfection
+
+	${PKG_CLI_TOOLS[@]}
+)
+
+# XXX
+PKG_TERMUX=(
+	# XXX
+
+	${PKG_CLI_TOOLS[@]}
 )
 
 PKG_NPM=(
