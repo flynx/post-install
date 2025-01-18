@@ -30,6 +30,9 @@ PKG=(
 	exiftool libvips exiv2
 	ffmpeg mpg123 
 	cmus
+
+	# LaTeX
+	# XXX
 )
 
 pkg upgrade
