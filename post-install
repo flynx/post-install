@@ -153,6 +153,7 @@ PKG_DNF=(
 	tlp
 	acpi
 	smartmontools
+	nut
 
 	# tools and recovery...
 	gparted gdisk testdisk
