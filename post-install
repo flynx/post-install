@@ -157,7 +157,8 @@ PKG_DNF=(
 	#
 	# also see: 
 	# 	https://github.com/intel/media-driver#known-issues-and-limitations for codec support
-	libva libva-utils gstreamer1-vaapi
+	libva libva-utils gstreamer1-vaapi 
+	libavcodec-freeworld
 
 	# for intel onboard graphics...
 	# 	https://discussion.fedoraproject.org/t/intel-graphics-best-practices-and-settings-for-hardware-acceleration/69944
