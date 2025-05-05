@@ -175,7 +175,8 @@ PKG_DNF=(
 
 	# tools and recovery...
 	gparted gdisk 
-	testdisk foremost
+	testdisk
+	foremost scalpel binwalk
 
 	# networking...
 	tor obfs4 
