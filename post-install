@@ -136,7 +136,7 @@ PKG_CLI_TOOLS=(
 	nnn mc tree ncdu 
 	zip zstd unrar
 
-	wget rsync 
+	wget rsync lftp
 
 	vim
 	git
