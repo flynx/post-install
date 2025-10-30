@@ -219,6 +219,8 @@ PKG_DNF=(
 	#		# XXX this sees to have no effect until /etc/vconsole.conf is 
 	#		# 		loaded...
 	#		GRUB_CMDLINE_LINUX="... vconsole.font=ter-v24n"
+	#	rebuild config:
+	#		grub2-mkconfig -o /boot/grub2/grub.cfg
 	# XXX should we also add a feature to set these up???
 	terminus-fonts
 	terminus-fonts-console
