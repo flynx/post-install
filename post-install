@@ -83,6 +83,7 @@ FEATURES=(
 	npm
 	vim
 
+	tlp
 	start-services
 	start-user-services
 
@@ -127,6 +128,11 @@ CFG_USER_LINK=(
 CFG_USER_COPY=(
 ) 
 
+PKG_DNF_LATEX=(
+	texlive-latex
+	texlive-photobook
+)
+
 # general user env tools...
 # XXX add way to alias names for differen platforms...
 PKG_CLI_TOOLS=(
@@ -168,7 +174,6 @@ PKG_DNF=(
 	#intel-media-driver  intel-gpu-tools mesa-dri-drivers mpv
 
 	# also see: https://github.com/AdnanHodzic/auto-cpufreq
-	tlp
 	acpi
 	smartmontools
 	nut
@@ -176,7 +181,7 @@ PKG_DNF=(
 	# tools and recovery...
 	gparted gdisk 
 	testdisk
-	foremost scalpel binwalk
+	foremost binwalk #scalpel 
 
 	# networking...
 	tor obfs4 
@@ -192,8 +197,8 @@ PKG_DNF=(
 	p7zip zip unrar zstd
 	btop htop atop nvtop iftop iotop #csysdig??
 	perf
-	wavemon
-	ncdu cpu-x glances stacer
+	#wavemon
+	ncdu cpu-x glances #stacer
 	jdupes fdupes
 	keepassxc
 	kitty #ghostty
@@ -223,6 +228,7 @@ PKG_DNF=(
 	# dev...
 	git 
 	nodejs golang
+	upx
 
 	# media...
 	vlc mpv cmus mpg123 id3v2 mpd mpc
@@ -245,6 +251,8 @@ PKG_DNF=(
 	# desktop...
 	ulauncher 
 	gnome-tweaks 
+	
+	gnome-firmware
 
 	# apps...
 	krita
@@ -265,6 +273,9 @@ PKG_DNF=(
 	gnome-shell-extension-just-perfection
 
 	${PKG_CLI_TOOLS[@]}
+
+	
+	${PKG_DNF_LATEX[@]}
 )
 
 # XXX
@@ -289,6 +300,7 @@ PKG_FLATPAK=(
 	# net...
 	#org.briarproject.Briar
 	io.github.ungoogled_software.ungoogled_chromium
+	app.zen_browser.zen
 	org.localsend.localsend_app
 
 	# media...
@@ -297,10 +309,11 @@ PKG_FLATPAK=(
 	org.avidemux.Avidemux
 
 	# tools...
+	com.logseq.Logseq
+	com.github.xournalpp.xournalpp
 	ch.openboard.OpenBoard
 	org.inkscape.Inkscape
 	org.blender.Blender
-	com.github.xournalpp.xournalpp
 )
 
 PKG_SNAP=(
@@ -427,8 +440,8 @@ function feature-dir(){
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-dnf(){
-	@ sudo dnf update
-	@setupList sudo dnf install - ${PKG_DNF[@]}
+	@ sudo dnf update ${DNF_ARGS}
+	@setupList sudo dnf install ${DNF_ARGS} - ${PKG_DNF[@]}
 }
 
 
@@ -489,6 +502,15 @@ function feature-start-services(){
 function feature-start-user-services(){
 	@setupList sudo systemctl --user enable - ${SERVICES_USER_START[@]}
 	@setupList sudo systemctl --user start - ${SERVICES_USER_START[@]}
+}
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-tlp(){
+	@ sudo dnf install tlp tlp-rdw
+	@ sudo dnf remove tuned tuned-ppd
+	@ sudo systemctl enable tlp
+	@ sudo tlp start
 }
 
 
@@ -673,7 +695,7 @@ function feature-snapshots(){ (
 	@ dnf install snapper python3-dnf-plugin-snapper
 	@ sudo snapper -c root create-config /
 	@ sudo snapper -c home create-config /home
-	@ sudo snapper -c boot create-config /boot
+	#@ sudo snapper -c boot create-config /boot
 
 	@ cd ~/work/EXTERNAL/
 	if ! [ -d grub-btrfs ] ; then
