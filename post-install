@@ -184,10 +184,9 @@ PKG_DNF=(
 	foremost binwalk #scalpel 
 
 	# networking...
+	syncthing
 	tor obfs4 
 	yt-dlp qbittorrent httrack
-	perl-Image-ExifTool
-
 
 	# tools...
 	# XXX prune with $PKG_CLI_TOOLS...
@@ -236,6 +235,7 @@ PKG_DNF=(
 	mkvtoolnix-gui
 	avidemux
 	exiftool exiv2 vips-tools
+	perl-Image-ExifTool
 
 	# codecs...
 	gstreamer1-plugin-openh264
@@ -302,6 +302,7 @@ PKG_FLATPAK=(
 	io.github.ungoogled_software.ungoogled_chromium
 	app.zen_browser.zen
 	org.localsend.localsend_app
+	io.github.martchus.syncthingtray
 
 	# media...
 	fr.handbrake.ghb
