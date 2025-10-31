@@ -227,7 +227,7 @@ PKG_DNF=(
 	terminus-fonts-grub2
 
 	# dev...
-	git 
+	git git-gui
 	nodejs golang
 	upx
 
@@ -317,6 +317,7 @@ PKG_FLATPAK=(
 	ch.openboard.OpenBoard
 	org.inkscape.Inkscape
 	org.blender.Blender
+	org.gimp.GIMP
 )
 
 PKG_SNAP=(
