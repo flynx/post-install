@@ -318,6 +318,8 @@ PKG_FLATPAK=(
 	org.inkscape.Inkscape
 	org.blender.Blender
 	org.gimp.GIMP
+	org.freecad.FreeCAD
+	com.usebottles.bottles
 )
 
 PKG_SNAP=(
