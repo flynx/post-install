@@ -79,6 +79,7 @@ FEATURES=(
 	flathub
 
 	dnf
+	dnf-remove
 	flatpak
 	npm
 	vim
@@ -279,6 +280,12 @@ PKG_DNF=(
 	
 	${PKG_DNF_LATEX[@]}
 )
+PKG_DNF_REMOVE=(
+	gnome-tour
+	gnome-shell-extension-background-logo
+	gnome-shell-extension-apps-menu
+)
+
 
 # XXX
 PKG_TERMUX=(
@@ -405,6 +412,8 @@ EOF
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# NOTE: if using exclude=... first remove the package and then add it 
+# 		to exclude=...
 function feature-dnf-config(){
 	if [ -z "$(grep 'f_lynx/post-install' /etc/dnf/dnf.conf)" ] ; then
 		echo Updating config
@@ -448,6 +457,9 @@ function feature-dir(){
 function feature-dnf(){
 	@ sudo dnf update ${DNF_ARGS}
 	@setupList sudo dnf install ${DNF_ARGS} - ${PKG_DNF[@]}
+}
+function feature-dnf-remove(){
+	@setupList sudo dnf remove ${DNF_ARGS} - ${PKG_DNF_REMOVE[@]}
 }
 
 
