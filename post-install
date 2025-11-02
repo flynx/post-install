@@ -185,7 +185,7 @@ PKG_DNF=(
 
 	# networking...
 	syncthing
-	tor obfs4 
+	tor obfs4 nyx
 	yt-dlp qbittorrent httrack
 
 	# tools...
