@@ -85,6 +85,7 @@ FEATURES=(
 	flathub
 
 	dnf
+	dnf-remove
 	flatpak
 	npm
 	vim
@@ -191,7 +192,7 @@ PKG_DNF=(
 
 	# networking...
 	syncthing
-	tor obfs4 
+	tor obfs4 nyx
 	yt-dlp qbittorrent httrack
 
 	# tools...
@@ -233,7 +234,7 @@ PKG_DNF=(
 	terminus-fonts-grub2
 
 	# dev...
-	git 
+	git git-gui
 	nodejs golang
 	upx
 
@@ -285,6 +286,12 @@ PKG_DNF=(
 	
 	${PKG_DNF_LATEX[@]}
 )
+PKG_DNF_REMOVE=(
+	gnome-tour
+	gnome-shell-extension-background-logo
+	gnome-shell-extension-apps-menu
+)
+
 
 # XXX
 PKG_TERMUX=(
@@ -323,6 +330,9 @@ PKG_FLATPAK=(
 	ch.openboard.OpenBoard
 	org.inkscape.Inkscape
 	org.blender.Blender
+	org.gimp.GIMP
+	org.freecad.FreeCAD
+	com.usebottles.bottles
 )
 
 PKG_SNAP=(
@@ -408,6 +418,8 @@ EOF
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# NOTE: if using exclude=... first remove the package and then add it 
+# 		to exclude=...
 function feature-dnf-config(){
 	if [ -z "$(grep 'f_lynx/post-install' /etc/dnf/dnf.conf)" ] ; then
 		echo Updating config
@@ -451,6 +463,9 @@ function feature-dir(){
 function feature-dnf(){
 	@ sudo dnf update ${DNF_ARGS}
 	@setupList sudo dnf install ${DNF_ARGS} - ${PKG_DNF[@]}
+}
+function feature-dnf-remove(){
+	@setupList sudo dnf remove ${DNF_ARGS} - ${PKG_DNF_REMOVE[@]}
 }
 
 
