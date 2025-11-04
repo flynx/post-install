@@ -325,6 +325,7 @@ PKG_FLATPAK=(
 	org.inkscape.Inkscape
 	org.blender.Blender
 	org.gimp.GIMP
+	com.rawtherapee.RawTherapee
 	org.freecad.FreeCAD
 	com.usebottles.bottles
 )
