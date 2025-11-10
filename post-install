@@ -328,6 +328,7 @@ PKG_FLATPAK=(
 	org.blender.Blender
 	org.gimp.GIMP
 	com.rawtherapee.RawTherapee
+	io.github.CyberTimon.RapidRAW
 	org.freecad.FreeCAD
 	com.usebottles.bottles
 )
