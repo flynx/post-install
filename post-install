@@ -191,6 +191,7 @@ PKG_DNF=(
 	foremost binwalk #scalpel 
 
 	# networking...
+	nmap
 	syncthing
 	tor obfs4 nyx
 	yt-dlp qbittorrent httrack
@@ -245,6 +246,7 @@ PKG_DNF=(
 	avidemux
 	exiftool exiv2 vips-tools
 	perl-Image-ExifTool
+	graphviz
 
 	# codecs...
 	gstreamer1-plugin-openh264
@@ -332,6 +334,7 @@ PKG_FLATPAK=(
 	org.blender.Blender
 	org.gimp.GIMP
 	com.rawtherapee.RawTherapee
+	#io.github.CyberTimon.RapidRAW
 	org.freecad.FreeCAD
 	com.usebottles.bottles
 )
