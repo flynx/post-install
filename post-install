@@ -680,7 +680,7 @@ function feature-shadowsocks-rust(){
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 function feature-gnome(){
 	# fractional scaling...
-	@ gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
+	#@ gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 
 	# disable beeps...
 	@ gsettings set org.gnome.desktop.sound event-sounds false
@@ -696,7 +696,19 @@ function feature-gnome(){
 	@ gsettings set org.gnome.desktop.wm.keybindings switch-input-source-backward "['<Alt>Shift_L']"
 	@ gsettings set org.gnome.desktop.wm.keybindings switch-input-source "['<Shift>Alt_L']"
 
-	# custom keys...
+	# Workspaces...
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-1 "['<Super>Home', '<Super>F1']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-2 "['<Super>F2']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-3 "['<Super>F3']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-4 "['<Super>F4']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 "['<Super>F5']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-6 "['<Super>F6']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-7 "['<Super>F7']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-last "['<Super>End']"
+
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-left "['<Super>Page_Up', '<Super><Alt>Left', '<Control><Alt>Left']"
+	@ gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-right "['<Super>Page_Down', '<Super><Alt>Right', '<Control><Alt>Right']"
+
 	# XXX
 }
 
