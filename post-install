@@ -145,7 +145,7 @@ PKG_CLI_TOOLS=(
 
 	wget rsync lftp
 
-	vim
+	vim micro
 	git
 	nodejs golang
 
