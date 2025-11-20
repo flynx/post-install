@@ -2,6 +2,12 @@
 #----------------------------------------------------------------------
 #
 # TODO:
+#   - split this into two "actions":
+#   	- system
+#   	- user 
+#   		- create -- start from zero
+#   		- init -- if everything is in place but on a clean system, fot
+#   		  example when moving a home dir to a clean os install.
 #	- keyd -- copy config from syncthing...
 #	- tor (user) + link cfg
 #	- link config files
