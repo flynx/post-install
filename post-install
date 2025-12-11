@@ -213,6 +213,9 @@ PKG_DNF=(
 	# XXX not sure if this supports Wayland...
 	#flameshot
 
+	# spreasheet editors (cli)
+	sc-im visidata
+
 	# fonts...
 	mscore-fonts-all
 	# tty fonts...
