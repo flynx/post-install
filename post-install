@@ -138,6 +138,8 @@ CFG_USER_COPY=(
 PKG_DNF_LATEX=(
 	texlive-latex
 	texlive-photobook
+	texlive-collection-fontsrecommended
+	mf
 )
 
 # general user env tools...
@@ -215,6 +217,7 @@ PKG_DNF=(
 
 	# spreasheet editors (cli)
 	sc-im visidata
+	pandoc
 
 	# fonts...
 	mscore-fonts-all
