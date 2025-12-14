@@ -274,6 +274,7 @@ PKG_DNF=(
 	# apps...
 	krita
 	pdftk
+	rawtherapee
 	# XXX needed for OBS' virtual camera + requires rpmfusion
 	#		$ sudo dnf install \
 	#			https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
@@ -339,7 +340,7 @@ PKG_FLATPAK=(
 	org.inkscape.Inkscape
 	org.blender.Blender
 	org.gimp.GIMP
-	com.rawtherapee.RawTherapee
+	#com.rawtherapee.RawTherapee
 	#io.github.CyberTimon.RapidRAW
 	org.freecad.FreeCAD
 	com.usebottles.bottles
