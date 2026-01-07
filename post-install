@@ -317,6 +317,7 @@ PKG_FLATPAK=(
 	# system...
 	com.github.tchx84.Flatseal 
 	com.mattjakeman.ExtensionManager 
+	io.github.gaheldev.Millisecond
 	ca.desrt.dconf-editor
 	io.github.realmazharhussain.GdmSettings
 	org.gustavoperedo.FontDownloader
