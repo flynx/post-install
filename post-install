@@ -202,6 +202,7 @@ PKG_DNF=(
 	# XXX prune with $PKG_CLI_TOOLS...
 	openssl gpm  
 	mc vifm nnn tmux bat tree
+	aspell
 	rsync rclone
 	p7zip zip unrar zstd
 	btop htop atop nvtop iftop iotop #csysdig??
