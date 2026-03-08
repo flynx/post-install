@@ -247,6 +247,7 @@ PKG_DNF=(
 	upx
 
 	# media...
+	pavucontrol
 	vlc mpv cmus mpg123 id3v2 mpd mpc
 	ffmpeg
 	mkvtoolnix-gui
@@ -276,6 +277,7 @@ PKG_DNF=(
 	krita
 	pdftk
 	rawtherapee
+	#obs-studio obs-studio-plugin-pwvideo
 	# XXX needed for OBS' virtual camera + requires rpmfusion
 	#		$ sudo dnf install \
 	#			https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
