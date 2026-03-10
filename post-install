@@ -562,6 +562,13 @@ function feature-vim(){
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-broot(){ (
+	@ sudo dnf copr enable petersen/broot
+	@ sudo dnf install broot
+) }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # see:
 # 	https://github.com/rvaiya/keyd
 # XXX copy config: /etc/keyd/<keyboard-id>.conf...
