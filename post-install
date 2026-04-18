@@ -218,6 +218,8 @@ PKG_DNF=(
 
 	# spreasheet editors (cli)
 	sc-im visidata
+
+	bsd-games
 	pandoc
 
 	# fonts...
