@@ -572,6 +572,13 @@ function feature-broot(){ (
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+function feature-tor-webtunnel(){ (
+	@ sudo dnf copr enable vgaetera/extras
+	@ sudo dnf install webtunnel
+) }
+
+
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 # see:
 # 	https://github.com/rvaiya/keyd
 # XXX copy config: /etc/keyd/<keyboard-id>.conf...
