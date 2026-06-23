@@ -90,6 +90,8 @@ FEATURES=(
 	npm
 	vim
 
+	tor
+
 	tlp
 	start-services
 	start-user-services
@@ -195,7 +197,6 @@ PKG_DNF=(
 	# networking...
 	nmap
 	syncthing
-	tor obfs4 nyx
 	yt-dlp qbittorrent httrack
 
 	# tools...
@@ -565,16 +566,17 @@ function feature-vim(){
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function feature-broot(){ (
-	@ sudo dnf copr enable petersen/broot
-	@ sudo dnf install broot
+function feature-tor(){ (
+	# for webtunnel...
+	@ sudo dnf copr enable vgaetera/extras
+	@ sudo dnf install tor obfs4 webtunnel nyx
 ) }
 
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-function feature-tor-webtunnel(){ (
-	@ sudo dnf copr enable vgaetera/extras
-	@ sudo dnf install webtunnel
+function feature-broot(){ (
+	@ sudo dnf copr enable petersen/broot
+	@ sudo dnf install broot
 ) }
 
 
