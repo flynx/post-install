@@ -150,7 +150,7 @@ PKG_CLI_TOOLS=(
 	bash
 	tmux
 
-	nnn mc tree ncdu 
+	nnn mc tree ncdu pv
 	zip zstd unrar
 
 	wget rsync lftp
@@ -202,7 +202,7 @@ PKG_DNF=(
 	# tools...
 	# XXX prune with $PKG_CLI_TOOLS...
 	openssl gpm  
-	mc vifm nnn tmux bat tree
+	mc vifm nnn tmux bat tree pv
 	aspell
 	rsync rclone
 	p7zip zip unrar zstd
