@@ -252,7 +252,7 @@ PKG_DNF=(
 	# media...
 	pavucontrol
 	vlc mpv cmus mpg123 id3v2 mpd mpc 
-	cuetools shntool
+	cuetools shntool flac
 	ffmpeg
 	mkvtoolnix-gui
 	avidemux
