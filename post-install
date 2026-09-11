@@ -251,7 +251,7 @@ PKG_DNF=(
 
 	# media...
 	pavucontrol
-	vlc mpv cmus mpg123 id3v2 mpd mpc
+	vlc mpv cmus mpg123 id3v2 mpd mpc cuetools
 	ffmpeg
 	mkvtoolnix-gui
 	avidemux
@@ -277,6 +277,7 @@ PKG_DNF=(
 	gnome-firmware
 
 	# apps...
+	audacity
 	krita
 	pdftk
 	rawtherapee
